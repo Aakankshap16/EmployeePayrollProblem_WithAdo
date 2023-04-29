@@ -10,17 +10,21 @@ namespace EmployeePayroll
 {
     public class EmployeeRepo
     {
-        public static string connectionstring = "data source=(localdb)\\MSSQLLocalDB; initial catalog=PayRollService266; integrated security=true";
+        private static SqlConnection ConnectionString()
+        {
+            return new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=PayRollService266;Integrated Security=True");
+        }
 
-        SqlConnection connection = new SqlConnection(connectionstring);
+       
 
         public bool AddEmployee(EmployeeModel model)
         {
+            SqlConnection connection = ConnectionString();
             try
             {
-                using (this.connection)
+                using (connection)
                 {
-                    SqlCommand command = new SqlCommand("SpAddemployeeDetails", this.connection);
+                    SqlCommand command = new SqlCommand("SpAddemployeeDetails", connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@EmployeeName", model.EmployeeName);
                     command.Parameters.AddWithValue("@PhoneNumber", model.PhoneNumber);
@@ -36,9 +40,9 @@ namespace EmployeePayroll
                     command.Parameters.AddWithValue("@City", model.City);
                     command.Parameters.AddWithValue("@Country", model.Country);
 
-                    this.connection.Open();
+                    connection.Open();
                     var result = command.ExecuteNonQuery();
-                    this.connection.Close();
+                    connection.Close();
                     if (result != 0)
                     {
                         return true;
@@ -54,10 +58,50 @@ namespace EmployeePayroll
 
             finally
             {
-                this.connection.Close();
+                connection.Close();
             }
             return false;
         }
+
+     
+        // FOR UPDATE
+        public bool UpdateEmployee(string employeeName, double newBasicPay)
+        {
+            SqlConnection salaryconnection = ConnectionString();
+            try
+            {
+                using (salaryconnection)
+                {
+                    SqlCommand command = new SqlCommand("spUpdateEmployeeSalary", salaryconnection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@BasicPay", newBasicPay);
+                    command.Parameters.AddWithValue("@EmployeeName", employeeName);
+
+                    salaryconnection.Open();
+                    var result = command.ExecuteNonQuery();
+                    salaryconnection.Close();
+                    if (result != 0)
+                    {
+                        // Update the EmployeeModel object with the updated BasicPay
+                        EmployeeModel employee = new EmployeeModel();
+                        employee.BasicPay = newBasicPay;
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error connecting to database: " + ex.Message);
+            }
+
+            finally
+            {
+                salaryconnection.Close();
+            }
+            return false;
+        }
+
 
     }
 }
