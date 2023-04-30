@@ -1,19 +1,24 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EmployeePayroll;
-namespace EmployeePayrollTest
+
+namespace EmployeePayroll.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class PayrollDBServiceTests
     {
         [TestMethod]
-        public void TestUpdateEmployee()
+        public void TestGetEmployeeNameByName()
         {
-            EmployeeRepo repo = new EmployeeRepo();
-            string employeeName = "Terisa";
-            double newBasicPay = 3000000.00;
+            // Arrange
+            PayrollDBService payrollDBService = new PayrollDBService();
+            string employeeName = "Divya";
 
-            bool result = repo.UpdateEmployee(employeeName, newBasicPay);
+            // Act
+            EmployeeModel result = payrollDBService.GetEmployeeNameByName(employeeName);
 
-            Assert.IsTrue(result);
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(employeeName, result.EmployeeName);
         }
     }
 }
