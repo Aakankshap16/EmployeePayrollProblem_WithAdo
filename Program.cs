@@ -5,56 +5,34 @@
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Employee Payroll");
-            EmployeeRepo employeeRepo = new EmployeeRepo();
 
-            EmployeeModel employee = new EmployeeModel();
-            employee.EmployeeName = "Aakanksha Pandey";
-            employee.PhoneNumber = "234567890";
-            employee.Address = "sector-7";
-            employee.Department = "Hr";
-            employee.Gender = 'F';
-            employee.BasicPay = 200000.00;
-            employee.Duduction = 1500.00;
-            employee.TaxablePay = 200.00;
-            employee.Tax = 300;
-            employee.NetPay = 2500.00;
-            employee.StartDate = DateTime.Now;
-            employee.City = "Hydrabad";
-            employee.Country = "India";
+            // DATA ACCORDING TO THE GIVEN RANGE UC5
+            DateTime startDate = new DateTime(2010, 1, 1);
+            DateTime endDate = new DateTime(2022, 12, 31);
 
-          //  employeeRepo.AddEmployee(employee); //ADD VALUE 1
+            PayrollDBService payrollDBService = new PayrollDBService();
+            EmployeeModel employee = payrollDBService.GetEmployeesByJoinDateRange(startDate, endDate);
 
+            if (employee != null)
+            {
+                Console.WriteLine($"Employee Name: {employee.EmployeeName}");
+                Console.WriteLine($"Address: {employee.Address}");
+                Console.WriteLine($"Phone Number: {employee.PhoneNumber}");
+                Console.WriteLine($"Department: {employee.Department}");
+                Console.WriteLine($"Start Date: {employee.StartDate}");
+                Console.WriteLine($"City: {employee.City}");
+                Console.WriteLine($"Country: {employee.Country}");
+                Console.WriteLine($"Basic Pay: {employee.BasicPay}");
+                Console.WriteLine($"Deduction: {employee.Duduction}");
+                Console.WriteLine($"Taxable Pay: {employee.TaxablePay}");
+                Console.WriteLine($"Tax: {employee.Tax}");
+                Console.WriteLine($"Net Pay: {employee.NetPay}");
+            }
+            else
+            {
+                Console.WriteLine("No employees found in the given date range.");
+            }
 
-            EmployeeModel employee2 = new EmployeeModel();
-            employee2.EmployeeName = "tersia";
-            employee2.PhoneNumber = "9876590";
-            employee2.Address = "Main-St";
-            employee2.Department = "Sales";
-            employee2.Gender = 'F';
-            employee2.BasicPay = 200000.00;
-            employee2.Duduction = 1500.00;
-            employee2.TaxablePay = 200.00;
-            employee2.Tax = 1500;
-            employee2.NetPay = 1500000.00;
-            employee2.StartDate = DateTime.Now;
-            employee2.City = "pune";
-            employee2.Country = "India";
-           
-
-            //employeeRepo.AddEmployee(employee2);  //ADD VALUE 2
-
-            // Update Terisa's salary
-           // employeeRepo.UpdateEmployee(employee2.EmployeeName, 3000000.00);    // UPDATE VALUE UC3,UC4
-
-          
-              // Retrieve the employee from the database REFACTOR THE CODE UC4
-            EmployeeModel retrievedEmployee = PayrollDBService.Instance.GetEmployeeNameByName("Divya");
-
-            // Display the employee's information
-            Console.WriteLine("Employee Name: " + retrievedEmployee.EmployeeName);
-            Console.WriteLine("Basic Pay: " + retrievedEmployee.BasicPay);
-            Console.WriteLine("Start Date: " + retrievedEmployee.StartDate.ToString("yyyy-MM-dd"));
-     
         }
     }
 }
