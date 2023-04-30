@@ -22,7 +22,7 @@
             employee.City = "Hydrabad";
             employee.Country = "India";
 
-          //  employeeRepo.AddEmployee(employee);
+          //  employeeRepo.AddEmployee(employee); //ADD VALUE 1
 
 
             EmployeeModel employee2 = new EmployeeModel();
@@ -41,14 +41,20 @@
             employee2.Country = "India";
            
 
-            //employeeRepo.AddEmployee(employee2);
+            //employeeRepo.AddEmployee(employee2);  //ADD VALUE 2
 
             // Update Terisa's salary
-            employeeRepo.UpdateEmployee(employee2.EmployeeName, 3000000.00);
+           // employeeRepo.UpdateEmployee(employee2.EmployeeName, 3000000.00);    // UPDATE VALUE UC3,UC4
 
+          
+              // Retrieve the employee from the database REFACTOR THE CODE UC4
+            EmployeeModel retrievedEmployee = PayrollDBService.Instance.GetEmployeeNameByName("Divya");
 
-           
-
+            // Display the employee's information
+            Console.WriteLine("Employee Name: " + retrievedEmployee.EmployeeName);
+            Console.WriteLine("Basic Pay: " + retrievedEmployee.BasicPay);
+            Console.WriteLine("Start Date: " + retrievedEmployee.StartDate.ToString("yyyy-MM-dd"));
+     
         }
     }
 }
